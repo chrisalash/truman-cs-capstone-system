@@ -21,7 +21,7 @@ npm run build
 ```
 
 ## Contributing
-- Pull requests should always be reviewed by at least one other UDAO member prior to being merged
+- Pull requests should always be reviewed by at least one other member prior to being merged
   - Exceptions include very small pull requests that are not critical to functionality (making frontend buttons look nice as an example)
 - Mark unfinished pull requests with the `wip` label
 - When you start work on something you should have a pull request opened that same day. Or at least as soon as possible so others can be aware of the changes you are making
