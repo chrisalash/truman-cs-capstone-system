@@ -1,0 +1,79 @@
+/*Stylesheet for student_form_submit when printed */
+
+#preappov_prop{
+	 height: 750px;
+	 font-family: san-serif;
+	 width: 925px;
+	 margin-top: 50px;
+	 margin-left: 50px;
+	 margin-right: 50px;
+	 margin-bottom: 50px;
+}
+
+#main_header{
+  font-size: 16px;
+  text-align: center;
+}
+
+#subheader_form{
+  margin-left: 6em;
+  max-width: 40em;
+  text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.center {
+	text-align: center;
+}
+
+
+/*
+
+form[name="approval_form"] {
+  left: 10em;
+  font-size: 1em;
+  top: 0.625em;
+  margin: 0 auto;
+  margin-left: 5em;
+  padding: 0.5em;
+  text-align: left;
+  width: 45em;
+}
+
+
+
+
+
+#edit_list {
+  margin: 0 auto;
+  text-align: left;
+  width: 45%;
+}
+
+#description {
+  max-width: 40em;
+  white-space: normal;
+}
+.form_header {
+  font-size: 175%;
+  text-align: center;
+}
+
+
+
+
+#print_form{
+  display: inline-block;
+  margin-left: 0.625em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+
+
+a {
+  display: none;
+} */
