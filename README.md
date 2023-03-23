@@ -1,5 +1,5 @@
 # Truman Computer Science Capstone Presentation System
-For CS370. A significant addition to the Truman Computer Science department's capstone system. Adds the ability to schedule capstone presentations using a calendar-like system.
+For CS 370. A significant addition to the Truman Computer Science department's capstone system. Adds the ability to schedule capstone presentations using a calendar-like system.
 
 Uses SvelteKit as the front-end framework.
 
@@ -9,8 +9,8 @@ Uses SvelteKit as the front-end framework.
 
 ## Run
 ```shell
-git clone https://github.com/jagger-harris/truman-cs-capstone-presentation-system.git
-cd truman-cs-capstone-presentation-system
+git clone https://github.com/jagger-harris/truman-cs-capstone-system.git
+cd truman-cs-capstone-system
 npm install
 npm run dev
 ```
