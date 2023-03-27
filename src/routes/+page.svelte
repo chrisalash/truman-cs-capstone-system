@@ -1,2 +1,8 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<h1>Truman Capstone Scheduling System</h1>
+<body>
+    <a href="/departmentchair/capstonedateselect">Department Chair - Capstone Date Selection</a>
+</body>
+<body>
+    <a href="/students/capstonedateselect">Student - Capstone Date Selection</a>
+</body>
+
