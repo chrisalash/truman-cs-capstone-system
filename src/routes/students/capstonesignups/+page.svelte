@@ -179,7 +179,6 @@ tbody {
     width: 500px;
 }
 
-/* Put somewhere else to import if used elsewhere?*/
 .vertical-resizer {
   width: 100%;
   height: 5px;
