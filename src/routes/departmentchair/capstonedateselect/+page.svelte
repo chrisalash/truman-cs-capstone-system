@@ -91,6 +91,8 @@
     border: 1px solid #ccc;
     padding: 8px;
     text-align: center;
+    font-size: 1.5rem;
+    height: 5rem;
   }
 
   th {
@@ -115,11 +117,13 @@
     align-items: center;
     padding: 10px;
     border: 1px solid #ccc;
-    border-width: 1px 1px 0 1px
+    border-width: 1px 1px 0 1px;
+    font-size: 1.5rem;
   }
 
   .calendar-button {
-    width: 50px;
-    height: 50px;
+    font-size: 1.5rem;
+    width: 5rem;
+    height: 5rem;
   }
 </style>

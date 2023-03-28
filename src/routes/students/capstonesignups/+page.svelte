@@ -1,5 +1,5 @@
 <script lang="ts">
-  let tableContainer;
+  let tableContainer: HTMLDivElement;
   let startY = 0;
   let startHeight = 0;
   let date = new Date();
