@@ -5,12 +5,21 @@
   let date = new Date();
   let year = date.getFullYear();
   let month = date.getMonth();
-  let rows = [];
+  /*let rows = [];*/
 
   function getDaysInMonth(month: number, year: number) {
     return new Date(year, month + 1, 0).getDate();
   }
 
+  import ResponsiveTable from '$lib/responsiveTable.svelte';
+
+  const headers: string[] = ['Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const rows: string[][] = [
+    ['3:00', '3:00', '3:00', '3;00'],
+    ['4:00', '4:00', '4:00', '4:00'],
+    ['5:00', '5:00', '5:00', '5:00']
+  ];
+  /*
   function getTimeSlots() {
     const timeSlots = [];
     let startTime = new Date();
@@ -54,6 +63,7 @@
     document.removeEventListener('mousemove', resizeTable);
     document.removeEventListener('mouseup', stopResize);
   }
+  */
 </script>
 
 <main class='flex flex-col'>
@@ -64,12 +74,19 @@
     <div class='mb-4'>
       <h3 class='text-3xl'>Spring - {year}</h3>
     </div>
-    <div bind:this={tableContainer}>
+    <ResponsiveTable {headers} {rows} columnWidth="w-[50.4rem]" />
+    <!--
+    <div class="table-container" bind:this={tableContainer}>
       <table class='border-collapse w-full'>
         <thead>
           <tr>
-            {#each days as day}
-              <th class='border-solid border-2 border-gray-200 p-2 text-center text-2xl m-10 bg-gray-300'>{day}</th>
+            {#each days as day, index (index)}
+              <th class='border-solid border-2 border-gray-200 p-2 text-center text-2xl m-10 bg-gray-300'>
+                {day}
+                {#if index < days.length - 1}
+                  <div class="resizer absolute inset-y-0 right-0 w-1 h-full cursor-col-resize" on:mousedown={(event) => startResize(event, index)}></div>
+                {/if}
+              </th>
             {/each}
           </tr>
         </thead>
@@ -84,9 +101,13 @@
         </tbody>
       </table>
     </div>
+    -->
+    <!--
     <div class='vertical-resizer' on:mousedown={startResize}>
       <span style='width: 15px; height: 1px; background-color: #fff;' />
     </div>
+    -->
   </div>
   <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>Another cell if need be.</div>
 </main>
+

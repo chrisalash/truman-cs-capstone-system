@@ -1,3 +1,5 @@
+<!-- THIS IS NO LONGER RELEVANT, SHOULD BE DELETED IN THE FUTURE, NEW VERSION IN STUDENT FOLDER-->
+
 <script lang="ts">
   let tableContainer;
   let startY = 0;
