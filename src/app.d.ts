@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+const { prisma } = require("$lib/server/prisma");
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces

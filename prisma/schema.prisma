@@ -10,8 +10,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model spring_2023 {
-  id Int
-  time_start DateTime @id
+model capstone_presentations {
+  id Int @id @default(autoincrement())
+  username String @db.VarChar(12)
+  time_start DateTime
+  time_end DateTime
+}
+
+model capstone_presentations_archive {
+  id Int @id @default(autoincrement())
+  username String
+  time_start DateTime
   time_end DateTime 
+}
+
+model test {
+  idtest Int @id 
 }
