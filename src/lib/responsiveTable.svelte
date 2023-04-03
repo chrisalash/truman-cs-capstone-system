@@ -3,6 +3,7 @@
   export let headers: string[] = [];
   export let rows: string[][] = [];
   export let columnWidth: string = 'w-96';
+  export let onCellButtonClick: (cell: string, rowIndex: number, cellIndex: number) => void = () => {};
 </script>
 
 <div class="w-full overflow-x-auto">
@@ -22,10 +23,14 @@
     <tbody class="divide-y divide-grey-200">
       {#each rows as row, rowIndex}
         <tr class="{rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'}">
-          {#each row as cell}
-            <td 
-              class="border-solid border-2 border-gray-200 p-2 text-center text-xl m-10 hover:bg-gray-200 {columnWidth}">
+          {#each row as cell, cellIndex}
+            <td class="border-solid border-2 border-gray-200 p-2 text-center text-xl m-10 hover:bg-gray-200 {columnWidth}">
+              <button
+                class="w-full h-full focus:outline-none focus:ring-2 focus:ring-blue-300"
+                on:click={() => onCellButtonClick(cell, rowIndex, cellIndex)}
+              >
               {cell}
+              </button>
             </td>
           {/each}
         </tr>
