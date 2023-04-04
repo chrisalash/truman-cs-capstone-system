@@ -24,6 +24,9 @@ model capstone_presentations_archive {
   time_end DateTime 
 }
 
-model test {
-  idtest Int @id 
+model capstone_taken {
+  slot_taken Boolean 
+  date DateTime
+  time_start DateTime @id
+  time_end DateTime
 }
