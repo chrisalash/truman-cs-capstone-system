@@ -22,19 +22,6 @@
     return new Date(year, month + 1, 0).getDate();
   }
 
-  function onCellButtonClick(cell: string, rowIndex: number, cellIndex: number) {
-    console.log(`Clicked cell: ${cell} at row ${rowIndex}, column ${cellIndex}`);
-  }
-
-  import ResponsiveTable from '$lib/responsiveTable.svelte';
-
-  const headers: string[] = ['Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-  const rows: string[][] = [
-    ['3:00', '3:00', '3:00', '3;00'],
-    ['4:00', '4:00', '4:00', '4:00'],
-    ['5:00', '5:00', '5:00', '5:00']
-  ];
-  /*
   function getTimeSlots() {
     const timeSlots = [];
     let startTime = new Date();
@@ -77,7 +64,6 @@
     document.removeEventListener('mousemove', resizeTable);
     document.removeEventListener('mouseup', stopResize);
   }
-  */
 </script>
 
 <main class='flex flex-col'>
@@ -88,9 +74,7 @@
     <div class='mb-4'>
       <h3 class='text-3xl'>Spring - {year}</h3>
     </div>
-    <ResponsiveTable {headers} {rows} columnWidth="w-[50.4rem]" {onCellButtonClick} />
-    <!--
-    <div class="table-container" bind:this={tableContainer}>
+    <div bind:this={tableContainer}>
       <table class='border-collapse w-full'>
         <thead>
           <tr>
@@ -118,13 +102,9 @@
         </tbody>
       </table>
     </div>
-    -->
-    <!--
     <div class='vertical-resizer' on:mousedown={startResize}>
       <span style='width: 15px; height: 1px; background-color: #fff;' />
     </div>
-    -->
   </div>
   <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>Another cell if need be.</div>
 </main>
-
