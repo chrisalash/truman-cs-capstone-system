@@ -16,7 +16,7 @@
   let year = date.getFullYear();
   let month = date.getMonth();
   let rows = [];
-  let username = "testusernamelol"
+  let username = "testuserna"
 
   function getDaysInMonth(month: number, year: number) {
     return new Date(year, month + 1, 0).getDate();
@@ -89,7 +89,13 @@
               {#each presentations as presentation}
                 {#if presentation.time_start[i] != undefined}
                   {#if presentation.slot_taken[i] == 1}
-                    <td class='border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer text-center text-xl m-10' id={presentation.id[i]}>{presentation.time_start[i]}-{presentation.time_end[i]}</td>
+                  <td class='border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer text-center text-xl m-10'>
+                    <form action="?/Student_Change_Time" method="POST">
+                      <button>{presentation.time_start[i]}-{presentation.time_end[i]}</button>
+                      <input type="hidden" name="presentation_id" value={presentation.id[i]} />
+                      <input type="hidden" name="username" value={username} />
+                    </form>
+                  </td>
                   {:else}
                     <td class='border-solid border-2 border-gray-200 p-2 text-center text-gray-500 text-xl m-10'>{presentation.time_start[i]}-{presentation.time_end[i]}</td>
                   {/if}

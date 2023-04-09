@@ -14,7 +14,6 @@ export const load: ServerLoad = async () => {
             prez[count].time_end = prez[count].time_end.split(',')
             lengths.push(prez[count].time_start.length)
         }
-        console.log(prez)
         return{
             presentations: prez,
             table_size: Math.max(...lengths)
@@ -33,7 +32,12 @@ export const actions: Actions = {
         }
 
         try{
-            await prisma.$queryRaw`Update capstone_presentations set username = ${username} where id = ${presentation_id}`
+            console.log(username)
+            console.log(presentation_id)
+            if(await prisma.$queryRaw(Prisma.sql`SELECT username FROM capstone_presentations WHERE username Like ${username}`)){
+                await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set username = "" where username = ${username}`)
+            }
+            await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set username = ${username} where id = ${presentation_id}`)
         } catch(err) {
             console.error(err)
             return fail(500, { message: 'Could not update the presenter'})
