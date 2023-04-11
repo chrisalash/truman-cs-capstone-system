@@ -32,8 +32,6 @@ export const actions: Actions = {
         }
 
         try{
-            console.log(username)
-            console.log(presentation_id)
             if(await prisma.$queryRaw(Prisma.sql`SELECT username FROM capstone_presentations WHERE username Like ${username}`)){
                 await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set username = "" where username = ${username}`)
             }
