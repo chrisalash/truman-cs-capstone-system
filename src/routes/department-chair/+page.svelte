@@ -1,4 +1,6 @@
 <script lang='ts'>
+    import { text } from "svelte/internal";
+
   const monthsInYear = [
     'January',
     'February',
@@ -14,10 +16,15 @@
     'December'
   ];
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const headers = ['Date', 'Time Start', 'Time End', '']
 
   let date = new Date();
   let year = date.getFullYear();
   let month = date.getMonth();
+
+  export let selectedDates: String[] = [];
+  export let selectedStartTimes: Date[] = [];
+  export let selectedEndTimes: Date[] = [];
 
   function getDaysInMonth(month: number, year: number) {
     return new Date(year, month + 1, 0).getDate();
@@ -58,6 +65,25 @@
       month += 1;
     }
   }
+
+  function addDate(number: String | null) {
+    if(number != null) {
+        selectedDates.push(year + "-" + month + "-" + getDayOfMonth(+number, month, year))
+        selectedDates = selectedDates
+    }
+  }
+
+  function deleteDate(id: String | null){
+    if(id != null) {
+      selectedDates.splice(+id,1)
+      selectedStartTimes.splice(+id,1)
+      selectedEndTimes.splice(+id,1)
+      selectedDates = selectedDates
+      selectedStartTimes = selectedStartTimes
+      selectedEndTimes = selectedEndTimes
+    }
+  }
+
 </script>
 
 <main class='flex flex-col'>
@@ -88,7 +114,11 @@
                 {:else if i === getWeeks(month, year) - 1 && j > getLastDayOfWeek(month, year)}
                   <td class='border-solid border-2 border-gray-200 p-2 text-center text-4xl m-10'/>
                 {:else}
-                  <td class='transition-all duration-200 cursor-pointer border-solid border-2 border-gray-200 p-8 text-center text-4xl hover:bg-gray-300'>{getDayOfMonth(i * 7 + j, month, year)}</td>
+                <td class='transition-all duration-200 border-solid border-2 border-gray-200 p-8 text-center text-4xl hover:bg-gray-300'>
+                  <button value={i * 7 + j} class="cursor-pointer" style="width: 100%; height: 100%" on:click={(event)=>addDate(event.currentTarget.getAttribute("value"))}>
+                    {getDayOfMonth(i * 7 + j, month, year)}
+                  </button>
+                </td>
                 {/if}
               {/each}
             </tr>
@@ -98,6 +128,39 @@
     </div>
   </div>
   <div class='flex ml-4 w-full bg-white rounded p-4'>
-    Another cell if need be
+    <table class='border-collapse w-full'>
+      <thead>
+        <tr>
+          {#each headers as header}
+            <th class='border-solid border-2 border-gray-200 p-2 text-center text-2xl m-10 bg-gray-300'>{header}</th>
+          {/each}
+        </tr>
+      </thead>
+      <tbody>
+        {#if selectedDates != undefined}
+          {#each selectedDates as date, i}
+            <tr>
+              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>{date}</td>
+              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
+                <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedStartTimes[i]}>
+              </td>
+              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
+                <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedEndTimes[i]}>
+              </td>
+              <td class='border-solid border-2 border-gray-200 p-2 cursor-pointer text-center text-xl m-10'>
+                <button name={i.toString()} class="bg-red-400 h-12 w-24 text-white" on:click={(event)=>deleteDate(event.currentTarget.getAttribute("name"))}>
+                  Delete
+                </button>
+              </td>
+            </tr>
+          {/each}
+        {/if}
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button>
+
+    </button>
   </div>
 </main>
