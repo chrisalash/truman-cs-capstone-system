@@ -30,6 +30,7 @@ export const load: ServerLoad = async () => {
     }
 }
 
+// Actions that the webpage will perform that access the database
 export const actions: Actions = { 
     
     Remove_Student: async ({ request }) => {

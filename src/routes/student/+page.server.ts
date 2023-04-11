@@ -3,6 +3,7 @@ import { prisma } from "$lib/server/prisma";
 import { Prisma } from '@prisma/client'
 import { fail } from "@sveltejs/kit";
 
+// Server-side load function to fetch presentation data from the database
 export const load: ServerLoad = async () => {
     try 
     {
@@ -29,8 +30,8 @@ export const load: ServerLoad = async () => {
     }
 }
 
+// Actions that the webpage will perform that access the database
 export const actions: Actions = { 
-    
     Student_Change_Time: async ({ request }) => {
         const { username, presentation_id } = Object.fromEntries(await request.formData()) as { 
             username: string, 
@@ -47,6 +48,29 @@ export const actions: Actions = {
         } catch(err) {
             console.error(err)
             return fail(500, { message: 'Could not update the presenter'})
+        }
+
+        return {
+            status: 201
+        }
+    },
+
+    Remove_Self: async ({ request }) => {
+        const { username, presentation_id } = Object.fromEntries(await request.formData()) as { 
+            username: string, 
+            presentation_id: string
+        }
+
+        try{
+            console.log(username)
+            console.log(presentation_id)
+            if(await prisma.$queryRaw(Prisma.sql`SELECT username FROM capstone_presentations WHERE username Like ${username}`)){
+                await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set username = "" where id = ${presentation_id}`)
+            }
+            await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set username = "" where id = ${presentation_id}`)
+        } catch(err) {
+            console.error(err)
+            return fail(500, { message: 'Could not remove the presenter'})
         }
 
         return {
