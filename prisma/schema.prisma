@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model capstone_presentations {
+  id Int @id @default(autoincrement())
+  username String @db.VarChar(12)
+  time_start DateTime
+  time_end DateTime
+}
+
+model capstone_presentations_archive {
+  id Int @id @default(autoincrement())
+  username String
+  time_start DateTime
+  time_end DateTime 
+}
+
+model capstone_taken {
+  slot_taken Boolean 
+  date DateTime
+  time_start DateTime @id
+  time_end DateTime
+}
