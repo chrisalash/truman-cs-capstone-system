@@ -3,6 +3,7 @@ import { prisma } from "$lib/server/prisma";
 import { Prisma } from '@prisma/client'
 import { fail } from "@sveltejs/kit";
 
+
 // Server-side load function to fetch presentation data from the database
 export const load: ServerLoad = async () => {
     try 
