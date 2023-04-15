@@ -1,5 +1,6 @@
 <script lang='ts'>
     import { text } from "svelte/internal";
+    import Popup from "../../components/popup.svelte";
 
   const monthsInYear = [
     'January',
@@ -68,7 +69,8 @@
 
   function addDate(number: String | null) {
     if(number != null) {
-        selectedDates.push(year + "-" + month + "-" + getDayOfMonth(+number, month, year))
+        let this_month = month + 1
+        selectedDates.push(year + "-" + this_month + "-" + getDayOfMonth(+number, month, year))
         selectedDates = selectedDates
     }
   }
@@ -140,27 +142,30 @@
         {#if selectedDates != undefined}
           {#each selectedDates as date, i}
             <tr>
-              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>{date}</td>
-              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
-                <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedStartTimes[i]}>
-              </td>
-              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
-                <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedEndTimes[i]}>
-              </td>
-              <td class='border-solid border-2 border-gray-200 p-2 cursor-pointer text-center text-xl m-10'>
-                <button name={i.toString()} class="bg-red-400 h-12 w-24 text-white" on:click={(event)=>deleteDate(event.currentTarget.getAttribute("name"))}>
-                  Delete
-                </button>
-              </td>
+                <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>{date}</td>
+                <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
+                  <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedStartTimes[i]}>
+                </td>
+                <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
+                  <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedEndTimes[i]}>
+                </td>
+                <td class='border-solid border-2 border-gray-200 p-2 cursor-pointer text-center text-xl m-10'>
+                  <button name={i.toString()} class="bg-red-400 h-12 w-24 text-white" on:click={(event)=>deleteDate(event.currentTarget.getAttribute("name"))}>
+                    Delete
+                  </button>
+                </td>
             </tr>
           {/each}
         {/if}
       </tbody>
     </table>
   </div>
-  <div>
-    <button>
-
-    </button>
+  <div class='flex ml-4 w-full bg-white rounded p-4'>
+    <form action="?/Set_Dates" method="POST">
+      <button class="border-solid border-2 border-lime-500 bg-lime-400 font-extrabold h-12 rounded-full w-24 text-white" type="submit"> Confirm</button>
+      <input type="hidden" name="date" value={selectedDates} />
+      <input type="hidden" name="time_start" value={selectedStartTimes} />
+      <input type="hidden" name="time_end" value={selectedEndTimes} />
+      </form>
   </div>
 </main>
