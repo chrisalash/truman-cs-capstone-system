@@ -23,6 +23,8 @@
   let year = date.getFullYear();
   let month = date.getMonth();
 
+  let popup_visibility = false
+
   export let selectedDates: String[] = [];
   export let selectedStartTimes: Date[] = [];
   export let selectedEndTimes: Date[] = [];
@@ -84,6 +86,10 @@
       selectedStartTimes = selectedStartTimes
       selectedEndTimes = selectedEndTimes
     }
+  }
+
+  function toggle_popup_visibility(){
+    popup_visibility=!popup_visibility
   }
 
 </script>
@@ -161,11 +167,7 @@
     </table>
   </div>
   <div class='flex ml-4 w-full bg-white rounded p-4'>
-    <form action="?/Set_Dates" method="POST">
-      <button class="border-solid border-2 border-lime-500 bg-lime-400 font-extrabold h-12 rounded-full w-24 text-white" type="submit"> Confirm</button>
-      <input type="hidden" name="date" value={selectedDates} />
-      <input type="hidden" name="time_start" value={selectedStartTimes} />
-      <input type="hidden" name="time_end" value={selectedEndTimes} />
-      </form>
+    <button class="border-solid border-2 border-lime-500 bg-lime-400 font-extrabold h-12 rounded-full w-24 text-white" on:click={toggle_popup_visibility}> Confirm</button>
+      <Popup message="Are you sure you would like to submit these times?" formAction="?/Set_Dates" confirmButtonText="confirm" cancelButtonText="cancel" contents_value ={[selectedDates, selectedStartTimes, selectedEndTimes]} contents_names={["date","time_start","time_end"]} bind:showContent={popup_visibility}> </Popup>
   </div>
 </main>
