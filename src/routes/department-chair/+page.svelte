@@ -1,6 +1,7 @@
 <script lang='ts'>
     import { text } from "svelte/internal";
     import Popup from "../../components/popup.svelte";
+    import TimeSelectPopup from "../../components/time-select-popup.svelte";
 
   const monthsInYear = [
     'January',
@@ -22,12 +23,15 @@
   let date = new Date();
   let year = date.getFullYear();
   let month = date.getMonth();
-
+  
   let popup_visibility = false
+  // values for the time select popup
+  let selectedDate: String
+  let timeSelectVisibility = false
 
   export let selectedDates: String[] = [];
-  export let selectedStartTimes: Date[] = [];
-  export let selectedEndTimes: Date[] = [];
+  export let selectedStartTimes: String[] = [];
+  export let selectedEndTimes: String[] = [];
 
   function getDaysInMonth(month: number, year: number) {
     return new Date(year, month + 1, 0).getDate();
@@ -72,8 +76,8 @@
   function addDate(number: String | null) {
     if(number != null) {
         let this_month = month + 1
-        selectedDates.push(year + "-" + this_month + "-" + getDayOfMonth(+number, month, year))
-        selectedDates = selectedDates
+        selectedDate = year + "-" + this_month + "-" + getDayOfMonth(+number, month, year)
+        timeSelectVisibility = true
     }
   }
 
@@ -114,6 +118,7 @@
           </tr>
         </thead>
         <tbody>
+          <TimeSelectPopup message="Are you sure you would like to submit these times?" confirmButtonText="confirm" cancelButtonText="cancel" bind:selectedDates={selectedDates} bind:selectedStartTimes={selectedStartTimes} bind:selectedEndTimes= {selectedEndTimes} bind:showContent={timeSelectVisibility} bind:date={selectedDate}></TimeSelectPopup>
           {#each Array(getWeeks(month, year)) as _, i}
             <tr>
               {#each Array(7).fill(0) as _, j}
