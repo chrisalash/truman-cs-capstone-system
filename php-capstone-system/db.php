@@ -1,8 +1,8 @@
 <?php
 //Variables to connect to the database
 $GLOBALS['conn_info'] = "mysql:host=localhost;dbname=capstone2";
-$GLOBALS['u_name'] = "cap2web";
-$GLOBALS['p_word'] = "guessme!";
+$GLOBALS['u_name'] = "root";
+$GLOBALS['p_word'] = "password";
 
 function get_connection()
 {

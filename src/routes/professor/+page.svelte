@@ -34,7 +34,7 @@
       <h3 class='text-3xl'>Spring - {year}</h3>
     </div>
     <!-- Table to display presentation data -->
-    <div bind:this={tableContainer}>
+    <div bind:this={tableContainer} class='overflow-x-auto'>
       <table class='border-collapse w-full'>
         <thead>
           <tr>
@@ -52,19 +52,13 @@
                 {#if presentation.time_start[i] != undefined}
                   {#if presentation.slot_taken[i] == 0}
                     <!-- Display a button to remove a student if the slot is taken -->
-                    <td style='height: 100%' class='border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer text-center text-xl m-10'>
-                      <form action="?/Remove_Student" method="POST">
-                        <button style="width: 100%; height: 100%">
-                          {presentation.time_start[i]}-{presentation.time_end[i]}<br>
-                          <span class='text-gray-600'>{presentation.username[i]}</span>
-                        </button>
-                        <input type="hidden" name="presentation_id" value={presentation.id[i]} />
-                        <input type="hidden" name="username" value={username} />
-                      </form>
+                    <td style='height: 100%; min-width: 600px' class='border-solid border-2 border-gray-200 p-2 text-center text-gray-600 text-xl m-10'>
+                        {presentation.time_start[i]}-{presentation.time_end[i]}<br>
+                        <span class='text-gray-600'>{presentation.username[i]}</span>
                     </td>
                   {:else}
                     <!-- Display the start and end times if the slot is not taken -->
-                    <td class='border-solid border-2 border-gray-200 p-2 text-center text-gray-500 text-xl m-10'>
+                    <td style='min-width: 600px'class='border-solid border-2 border-gray-200 p-2 text-center text-gray-400 text-xl m-10'>
                       {presentation.time_start[i]}-{presentation.time_end[i]}<br>
                       <span class='text-gray-400'>No Student</span>
                     </td>

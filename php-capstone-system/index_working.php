@@ -42,6 +42,7 @@ else
   $username = phpCAS::getUser();
 }
 
+setcookie("username", $username, 0, "/");
 $_SESSION['username'] = $username;
 
 // determine whether user is 1st-time student, returning student, or
