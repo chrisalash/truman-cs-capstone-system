@@ -27,6 +27,7 @@
   <ul id="navigation">
     <li class="stu_li"><a href="student_home.php">Home</a></li>
     <li class="stu_li"><a href="student_edit_info.php">Edit Personal Info</a></li>
+    <li><a href="http://localhost:5173/">Presentations</a></li>
     <li class="stu_li"><a href="logout.php">Log Out</a></li>
   </ul>
   </div> <!-- menubar -->
