@@ -1,5 +1,7 @@
 <script lang='ts'>
     import { text } from "svelte/internal";
+    import Popup from "../../components/popup.svelte";
+    import TimeSelectPopup from "../../components/time-select-popup.svelte";
 
   const monthsInYear = [
     'January',
@@ -21,10 +23,15 @@
   let date = new Date();
   let year = date.getFullYear();
   let month = date.getMonth();
+  
+  let popup_visibility = false
+  // values for the time select popup
+  let selectedDate: String
+  let timeSelectVisibility = false
 
   export let selectedDates: String[] = [];
-  export let selectedStartTimes: Date[] = [];
-  export let selectedEndTimes: Date[] = [];
+  export let selectedStartTimes: String[] = [];
+  export let selectedEndTimes: String[] = [];
 
   function getDaysInMonth(month: number, year: number) {
     return new Date(year, month + 1, 0).getDate();
@@ -68,8 +75,9 @@
 
   function addDate(number: String | null) {
     if(number != null) {
-        selectedDates.push(year + "-" + month + "-" + getDayOfMonth(+number, month, year))
-        selectedDates = selectedDates
+        let this_month = month + 1
+        selectedDate = year + "-" + this_month + "-" + getDayOfMonth(+number, month, year)
+        timeSelectVisibility = true
     }
   }
 
@@ -82,6 +90,10 @@
       selectedStartTimes = selectedStartTimes
       selectedEndTimes = selectedEndTimes
     }
+  }
+
+  function toggle_popup_visibility(){
+    popup_visibility=!popup_visibility
   }
 
 </script>
@@ -106,6 +118,7 @@
           </tr>
         </thead>
         <tbody>
+          <TimeSelectPopup message="Are you sure you would like to submit these times?" confirmButtonText="confirm" cancelButtonText="cancel" bind:selectedDates={selectedDates} bind:selectedStartTimes={selectedStartTimes} bind:selectedEndTimes= {selectedEndTimes} bind:showContent={timeSelectVisibility} bind:date={selectedDate}></TimeSelectPopup>
           {#each Array(getWeeks(month, year)) as _, i}
             <tr>
               {#each Array(7).fill(0) as _, j}
@@ -140,27 +153,26 @@
         {#if selectedDates != undefined}
           {#each selectedDates as date, i}
             <tr>
-              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>{date}</td>
-              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
-                <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedStartTimes[i]}>
-              </td>
-              <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
-                <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedEndTimes[i]}>
-              </td>
-              <td class='border-solid border-2 border-gray-200 p-2 cursor-pointer text-center text-xl m-10'>
-                <button name={i.toString()} class="bg-red-400 h-12 w-24 text-white" on:click={(event)=>deleteDate(event.currentTarget.getAttribute("name"))}>
-                  Delete
-                </button>
-              </td>
+                <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>{date}</td>
+                <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
+                  <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedStartTimes[i]}>
+                </td>
+                <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
+                  <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedEndTimes[i]}>
+                </td>
+                <td class='border-solid border-2 border-gray-200 p-2 cursor-pointer text-center text-xl m-10'>
+                  <button name={i.toString()} class="bg-red-400 h-12 w-24 text-white" on:click={(event)=>deleteDate(event.currentTarget.getAttribute("name"))}>
+                    Delete
+                  </button>
+                </td>
             </tr>
           {/each}
         {/if}
       </tbody>
     </table>
   </div>
-  <div>
-    <button>
-
-    </button>
+  <div class='flex ml-4 w-full bg-white rounded p-4'>
+    <button class="border-solid border-2 border-lime-500 bg-lime-400 font-extrabold h-12 rounded-full w-24 text-white" on:click={toggle_popup_visibility}> Confirm</button>
+      <Popup message="Are you sure you would like to submit these times?" formAction="?/Set_Dates" confirmButtonText="confirm" cancelButtonText="cancel" contents_value ={[selectedDates, selectedStartTimes, selectedEndTimes]} contents_names={["date","time_start","time_end"]} bind:showContent={popup_visibility}> </Popup>
   </div>
 </main>

@@ -1,6 +1,7 @@
 <script lang='ts'>
   import { fromJSON } from "postcss";
   import type { PageData } from './$types'
+  import Popup from '../../components/popup.svelte';
   
   export let data : PageData
   $:({ presentations }= data)
