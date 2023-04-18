@@ -28,8 +28,13 @@
   <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>
     <h1 class='text-5xl text-violet-800'>Professor Tools</h1>
   </div>
-  <!-- Presentations container -->
   <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
+    <h1 class='text-3xl text-violet-800'>Description</h1>
+    <p class='text-xl'>View all student capstone presentation times.</p>
+  </div>
+  <!-- Presentations container -->
+  <div class='flex flex-col ml-4 w-full bg-white rounded p-4'>
+    <h1 class='text-3xl mb-4 text-violet-800'>Student Times</h1>
     <div class='mb-4'>
       <h3 class='text-3xl'>Spring - {year}</h3>
     </div>
@@ -73,6 +78,4 @@
       </table>
     </div>
   </div>
-  <!-- Additional container for other content -->
-  <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>Another cell if need be.</div>
 </main>
