@@ -29,5 +29,6 @@
      <li><a href="faculty_edit_info.php">Edit Personal Info</a></li>
      <li><a href="administer_faculty.php">Administer Faculty</a></li>
      <li><a href="logout.php">Log Out</a></li>
+     <li><a href="http://localhost:5173/">Presentations</a></li>
    </ul>
   </div> <!-- menu_bar -->
