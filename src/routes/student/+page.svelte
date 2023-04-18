@@ -50,7 +50,7 @@
                 {#if presentation.time_start[i] != undefined}
                   {#if presentation.slot_taken[i] == 1}
                   <!-- Display a button to add the user if the slot does not have a user assigned to it -->
-                    <td style='height: 74px; min-width: 600px' class='border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer text-gray-400 text-center text-xl m-10 relative'>
+                    <td style='height: 74px; min-width: 600px' class='border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer  text-center text-xl m-10 relative'>
                       <form action="?/Student_Change_Time" method="POST">
                         <button class='w-full h-full absolute top-0 left-0'>
                           {presentation.time_start[i]}-{presentation.time_end[i]}<br>
@@ -72,7 +72,7 @@
                     </td>
                   {:else}
                   <!-- Display the start and end times if the slot is taken -->
-                    <td style='height: 74px; min-width: 600px' class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
+                    <td style='height: 74px; min-width: 600px' class='border-solid border-2 border-gray-200 p-2 text-gray-400 text-center text-xl m-10'>
                       {presentation.time_start[i]}-{presentation.time_end[i]}<br>
                     </td>
                   {/if}
