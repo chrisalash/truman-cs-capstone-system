@@ -1,30 +1,31 @@
 <script lang='ts'>
-import type { PageData } from './$types'
+import { goto } from '$app/navigation';
 
-export let data : PageData
-  $:({ student_info }= data)
+type datatype = {
+  data_info: Record<string, any>[],
+  columns: String[]
+}
+
+export let data : datatype
+  $:({ data_info }= data)
   $:({ columns }= data)
-
-  $: not_undefined = columns as String[]
-  $: info = student_info as Record<string, any>[]
   
   let tableinfoStrings: String = ''
   let changed_date_id: Record<string, any>[]
 
-
-  function before_save() {
-
-  }
+  const databases = ["student", "capstone_presentations"]
 
   function stringify(i: string | null) {
+    console.log(data_info)
+    console.log(columns)
     if(i != null){
-      tableinfoStrings = JSON.stringify(info[+i], (_, v) => typeof v === 'bigint' ? v.toString() : v)
+      tableinfoStrings = JSON.stringify(data_info[+i], (_, v) => typeof v === 'bigint' ? v.toString() : v)
     }
   }
 
   function update_date(date: string | null, i: number, key: string) {
     if(date != null)
-      info[i][key] = date
+      data_info[i][key] = date
   }
 
   function isValidDateTimeLocal(dateTimeString: string): boolean {
@@ -48,6 +49,11 @@ export let data : PageData
     );
   }
 
+  function route_to_database(event: Event) {
+    const selectedRoute = (event.target as HTMLSelectElement).value;
+    goto(selectedRoute);
+  }
+
 </script>
 
 <main class='flex flex-col'>
@@ -60,11 +66,22 @@ export let data : PageData
   </div>
   <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
     <h1 class='text-2xl text-violet-800'>Database Access</h1>
+    <div class="mt-4 flex items-center space-x-2">
+      <label for="select" class="text-gray-700 font-medium">Select an option:</label>
+    <select on:change={route_to_database} class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue w-56">
+      {#each databases as databas}
+      <option>
+        {databas}
+      </option>
+      {/each}
+    </select>
+  </div>
       <div style="overflow: auto;">
+        {#if data_info != null && columns != null}
         <table class='border-collapse w-full'>
           <thead>
             <tr>
-            {#each not_undefined as column}
+            {#each columns as column}
               <th class='border-solid border-2 border-gray-200 p-2 text-center text-2xl m-10 bg-gray-300'>{column}</th>
             {/each}
             <th class='border-solid border-2 border-gray-200 p-2 text-center text-2xl m-10 bg-gray-300'>Delete</th>
@@ -72,7 +89,7 @@ export let data : PageData
             </tr>
           </thead>
           <tbody>
-            {#each info as student, i}
+            {#each data_info as student, i}
             <tr>
               {#each Object.keys(student) as keys}
               <td class='border-solid border-2 border-gray-200 p-2 cursor-pointer text-gray-500 text-center text-m m-10'>
@@ -103,6 +120,7 @@ export let data : PageData
             {/each}
           </tbody>
         </table>
+        {/if}
     </div>
   </div>
   <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>

@@ -2,7 +2,12 @@ import type { Actions, ServerLoad } from "@sveltejs/kit";
 import { prisma } from "$lib/server/prisma";
 import { Prisma } from '@prisma/client'
 import { fail } from "@sveltejs/kit";
-import type { RequestHandler } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
+
+type datatype = {
+    data_info: Record<string, any>[],
+    columns: String[]
+  }
 
 let database = "capstone_presentations"
 
@@ -11,9 +16,7 @@ async function table_returner (db:string) {
     if(db == "student") {
         return await prisma.$queryRaw`SELECT * FROM capstone2.student;`
     }
-    else if (db == "capstone_presentations") {
-        let hi = await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end' FROM capstone_presentations;`
-        console.log(isValidDateTimeLocal(hi[0].time_start))
+    else if (db == "capstone_presentations") { 
         return await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end' FROM capstone_presentations;`
     }
     return table
@@ -54,15 +57,20 @@ function get_date(date_string: string) {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 
-export const load: ServerLoad = async () => {
-    try {
-        let table: Object[] = await table_returner(database)
-        return{ 
-            student_info: table,
-            columns: await Object.keys(table[0])
+  export const load: ServerLoad = async ({params}) => {
+    if(params.slug) {
+        let table: Object[] = await table_returner(params.slug)
+        if(table) {
+            return{ 
+                data_info: table,
+                columns: Object.keys(table[0])
+            }
         }
-    } catch (error) {
-        console.error(error)
+    }
+
+    return{ 
+        data_info: [''],
+        columns: ['']
     }
 }
     
