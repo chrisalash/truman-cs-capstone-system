@@ -18,8 +18,8 @@
         <p class="text-2xl">{message}</p>
         <div class="flex-row">
           <form action={formAction} method="POST">
-            <button type='submit' class="mt-5 p-3 rounded bg-gray-400 text-xl hover:bg-gray-300">{confirmButtonText}</button>
-            <button on:click={() => toggle()} class="mt-5 ml-5 p-3 rounded bg-gray-400 text-xl hover:bg-gray-300">{cancelButtonText}</button>
+            <button type='submit' class="transition-all duration-200 mt-5 p-3 rounded bg-gray-200 text-xl hover:bg-gray-300">{confirmButtonText}</button>
+            <button on:click={() => toggle()} class="transition-all duration-200 mt-5 ml-5 p-3 rounded bg-violet-200 text-xl hover:bg-violet-300">{cancelButtonText}</button>
             {#each contents_names as name, i}
               <input type="hidden" name={name} value={contents_value[i]} />
             {/each}
