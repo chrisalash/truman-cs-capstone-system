@@ -3,7 +3,7 @@ import { goto } from '$app/navigation';
 
 type datatype = {
   data_info: Record<string, any>[],
-  columns: String[]
+  columns: string[]
 }
 
 export let data : datatype
@@ -11,9 +11,8 @@ export let data : datatype
   $:({ columns }= data)
   
   let tableinfoStrings: String = ''
-  let changed_date_id: Record<string, any>[]
 
-  const databases = ["student", "capstone_presentations"]
+  const databases = ["none","student", "capstone_presentations"]
 
   function stringify(i: string | null) {
     console.log(data_info)
@@ -50,9 +49,22 @@ export let data : datatype
   }
 
   function route_to_database(event: Event) {
-    const selectedRoute = (event.target as HTMLSelectElement).value;
+    let selectedRoute = (event.target as HTMLSelectElement).value;
+    if((event.target as HTMLSelectElement).value.trim() == "none") {
+      selectedRoute = window.location.origin+"/admin";
+    }
     goto(selectedRoute);
   }
+
+  function addRow() {
+    let info: Record<string, any> = {}
+    columns.forEach(element => {
+      info[element] = null;
+    });
+    data_info.push(info)
+    data_info=data_info
+  }
+
 
 </script>
 
@@ -120,6 +132,7 @@ export let data : datatype
             {/each}
           </tbody>
         </table>
+        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" on:click={addRow}>Add Row</button>
         {/if}
     </div>
   </div>

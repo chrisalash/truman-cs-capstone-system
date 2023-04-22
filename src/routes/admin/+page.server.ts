@@ -60,11 +60,10 @@ function get_date(date_string: string) {
   export const load: ServerLoad = async ({params}) => {
     if(params.slug) {
         let table: Object[] = await table_returner(params.slug)
-        console.log(table)
         if(table) {
             return{ 
                 data_info: table,
-                columns: await Object.keys(table[0])
+                columns: Object.keys(table[0])
             }
         }
     }
