@@ -28,7 +28,7 @@
         let endHours = Number(end_hours);
         let endMinutes = Number(end_minutes);
 
-        while(editedHours < endHours || !(editedHours == endHours && editedMinutes + interval >= endMinutes)) {
+        while(editedHours < endHours && !(editedHours == endHours && editedMinutes + interval > endMinutes)) {
         // Make sure the hours and minutes are within valid ranges
             let start = `${editedHours.toString().padStart(2, "0")}:${editedMinutes.toString().padStart(2, "0")}`
             editedMinutes = editedMinutes + interval

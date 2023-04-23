@@ -25,6 +25,7 @@
   let month = date.getMonth();
   
   let popup_visibility = false
+  let popup2_visibility = false
   // values for the time select popup
   let selectedDate: String
   let timeSelectVisibility = false
@@ -95,12 +96,19 @@
   function toggle_popup_visibility(){
     popup_visibility=!popup_visibility
   }
+  function toggle_popup2_visibility(){
+    popup2_visibility=!popup2_visibility
+  }
 
 </script>
 
 <main class='flex flex-col'>
   <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>
     <h1 class='text-5xl text-violet-800'>Department Chair Tools</h1>
+  </div>
+  <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>
+    <Popup message = "Would you like to archive the current capstone presentations?" formAction = "?/Archive_Presentations" bind:showContent={popup2_visibility}></Popup>
+    <button class="border-solid border-2 border-red-500 bg-red-400 font-extrabold h-12 w-32 text-white" on:click={toggle_popup2_visibility}> Archive Presentations</button>
   </div>
   <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>
     <div class='w-full bg-white'>
@@ -172,7 +180,9 @@
     </table>
   </div>
   <div class='flex ml-4 w-full bg-white rounded p-4'>
+    {#if selectedDates.length}
     <button class="border-solid border-2 border-lime-500 bg-lime-400 font-extrabold h-12 rounded-full w-24 text-white" on:click={toggle_popup_visibility}> Confirm</button>
       <Popup message="Are you sure you would like to submit these times?" formAction="?/Set_Dates" confirmButtonText="confirm" cancelButtonText="cancel" contents_value ={[selectedDates, selectedStartTimes, selectedEndTimes]} contents_names={["date","time_start","time_end"]} bind:showContent={popup_visibility}> </Popup>
-  </div>
+    {/if}
+    </div>
 </main>

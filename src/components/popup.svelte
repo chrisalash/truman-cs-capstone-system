@@ -1,10 +1,10 @@
 <script lang="ts">
   export let message: string;
-  export let confirmButtonText: string;
-  export let cancelButtonText: string;
+  export let confirmButtonText: string = "confrim";
+  export let cancelButtonText: string = "cancel";
   export let formAction: string;
-  export let contents_value: (String[] | Date[])[]
-  export let contents_names: string[]
+  export let contents_value: (String[] | Date[])[] = []
+  export let contents_names: string[] = []
   export let showContent = false;
 
   function toggle() {

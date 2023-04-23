@@ -1,7 +1,7 @@
 <script lang='ts'>
 import { goto } from '$app/navigation';
 
-  const databases = ["none","student", "capstone_presentations"]
+  const databases = ["none","student", "capstone_presentations", "capstone_presentations_archive"]
 
   function route_to_database(event: Event) {
     let selectedRoute = (event.target as HTMLSelectElement).value.trim();

@@ -1,5 +1,6 @@
 <script lang='ts'>
 import { goto } from '$app/navigation';
+import Popup from "../../../components/popup.svelte";
 
 type datatype = {
   data_info: Record<string, any>[],
@@ -9,10 +10,16 @@ type datatype = {
 export let data : datatype
   $:({ data_info }= data)
   $:({ columns }= data)
+
+  if(data_info == null || columns == null) {
+    data_info = []
+    columns = []
+  }
   
   let tableinfoStrings: String = ''
+  let popup_visibility = false
 
-  const databases = ["none","student", "capstone_presentations"]
+  const databases = ["none", "capstone_presentations", "capstone_presentations_archive"]
 
   function stringify(i: string | null) {
     console.log(data_info)
@@ -56,13 +63,8 @@ export let data : datatype
     goto(selectedRoute);
   }
 
-  function addRow() {
-    let info: Record<string, any> = {}
-    columns.forEach(element => {
-      info[element] = null;
-    });
-    data_info.push(info)
-    data_info=data_info
+  function toggle_popup_visibility(){
+    popup_visibility=!popup_visibility
   }
 
 
@@ -89,7 +91,7 @@ export let data : datatype
     </select>
   </div>
       <div style="overflow: auto;">
-        {#if data_info != null && columns != null}
+        {#if data_info != null && columns != null && data_info.length}
         <table class='border-collapse w-full'>
           <thead>
             <tr>
@@ -132,12 +134,11 @@ export let data : datatype
             {/each}
           </tbody>
         </table>
-        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" on:click={addRow}>Add Row</button>
         {/if}
     </div>
   </div>
   <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
-    <h1 class='text-2xl text-violet-800'>View Logs</h1>
-    Some text.
+    <Popup message = "Would you like to archive the current capstone presentations?" formAction = "?/Archive_Presentations" bind:showContent={popup_visibility}></Popup>
+    <button class="border-solid border-2 border-red-500 bg-red-400 font-extrabold h-12 w-32 text-white" on:click={toggle_popup_visibility}> Archive Presentations</button>
   </div>
 </main>

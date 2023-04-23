@@ -14,10 +14,16 @@ let database = "capstone_presentations"
 async function table_returner (db:string) {
     let table: Object[] = []
     if(db == "student") {
+        database = db
         return await prisma.$queryRaw`SELECT * FROM capstone2.student;`
     }
     else if (db == "capstone_presentations") { 
+        database = db
         return await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end' FROM capstone_presentations;`
+    }
+    else if (db == "capstone_presentations_archive") { 
+        database = db
+        return await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end' FROM capstone_presentations_archive;`
     }
     return table
 }
@@ -60,8 +66,7 @@ function get_date(date_string: string) {
   export const load: ServerLoad = async ({params}) => {
     if(params.slug) {
         let table: Object[] = await table_returner(params.slug)
-        console.log(table)
-        if(table) {
+        if(table.length) {
             return{ 
                 data_info: table,
                 columns: await Object.keys(table[0])
@@ -70,8 +75,8 @@ function get_date(date_string: string) {
     }
 
     return{ 
-        data_info: [''],
-        columns: ['']
+        data_info: [],
+        columns: []
     }
 }
     
@@ -140,6 +145,23 @@ export const actions: Actions = {
 
         return {
             status: 201
+        }
+    },
+
+    Archive_Presentations: async ({ request }) => {
+        let table: Record<string, any>[] = await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end' FROM capstone_presentations;`
+        try{
+            for(let count = 0; count < table.length; count++){
+                let id = table[count]["id"]
+                let username = table[count]["username"]
+                let time_start = table[count]["time_start"]
+                let time_end = table[count]["time_end"]
+                await prisma.$queryRaw(Prisma.sql`INSERT INTO capstone_presentations_archive(id,username,time_start, time_end) values(${id},${username},${time_start},${time_end})`)
+            }
+            await prisma.$queryRaw(Prisma.sql`DELETE FROM capstone_presentations`)
+        } catch(err) {
+            console.error(err)
+            return fail(500, { message: 'Could not remove the presenter'})
         }
     }
 }
