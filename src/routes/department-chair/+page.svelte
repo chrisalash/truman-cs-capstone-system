@@ -110,7 +110,6 @@
     <Popup message = "Would you like to archive the current capstone presentations?" formAction = "?/Archive_Presentations" bind:showContent={popup2_visibility}></Popup>
     <button class="border-solid border-2 border-red-500 bg-red-400 font-extrabold h-12 w-32 text-white" on:click={toggle_popup2_visibility}> Archive Presentations</button>
   </div>
-  <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>
   <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
     <h1 class='text-3xl text-violet-800'>Description</h1>
     <p class='text-xl'>Select dates and times for the capstone presentations.</p>
