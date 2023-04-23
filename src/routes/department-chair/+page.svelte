@@ -111,11 +111,17 @@
     <button class="border-solid border-2 border-red-500 bg-red-400 font-extrabold h-12 w-32 text-white" on:click={toggle_popup2_visibility}> Archive Presentations</button>
   </div>
   <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>
+  <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
+    <h1 class='text-3xl text-violet-800'>Description</h1>
+    <p class='text-xl'>Select dates and times for the capstone presentations.</p>
+  </div>
+  <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
+    <h1 class='text-3xl mb-4 text-violet-800'>Date Select</h1>
     <div class='w-full bg-white'>
       <div class='flex justify-between items-center p-1 border-solid border-2 border-gray-200 text-4xl rounded'>
-        <button class='transition-all duration-200 w-20 h-20 text=4xl rounded bg-gray-300 hover:bg-gray-400' on:click={previousMonth}>&lt;</button>
+        <button class='transition-all duration-200 w-20 h-20 text-4xl rounded bg-gray-200 hover:bg-gray-300' on:click={previousMonth}>&lt;</button>
         <h3>{year} - {monthsInYear[month]}</h3>
-        <button class='transition-all duration-200 w-20 h-20 text=4xl rounded bg-gray-300 hover:bg-gray-400' on:click={nextMonth}>&gt;</button>
+        <button class='transition-all duration-200 w-20 h-20 text-4xl rounded bg-gray-200 hover:bg-gray-300' on:click={nextMonth}>&gt;</button>
       </div>
       <table class='border-collapse w-full'>
         <thead>
@@ -126,7 +132,7 @@
           </tr>
         </thead>
         <tbody>
-          <TimeSelectPopup message="Are you sure you would like to submit these times?" confirmButtonText="confirm" cancelButtonText="cancel" bind:selectedDates={selectedDates} bind:selectedStartTimes={selectedStartTimes} bind:selectedEndTimes= {selectedEndTimes} bind:showContent={timeSelectVisibility} bind:date={selectedDate}></TimeSelectPopup>
+          <TimeSelectPopup message="Select the times for the date you selected." confirmButtonText="Confirm" cancelButtonText="Cancel" bind:selectedDates={selectedDates} bind:selectedStartTimes={selectedStartTimes} bind:selectedEndTimes= {selectedEndTimes} bind:showContent={timeSelectVisibility} bind:date={selectedDate}></TimeSelectPopup>
           {#each Array(getWeeks(month, year)) as _, i}
             <tr>
               {#each Array(7).fill(0) as _, j}
@@ -135,8 +141,8 @@
                 {:else if i === getWeeks(month, year) - 1 && j > getLastDayOfWeek(month, year)}
                   <td class='border-solid border-2 border-gray-200 p-2 text-center text-4xl m-10'/>
                 {:else}
-                <td class='transition-all duration-200 border-solid border-2 border-gray-200 p-8 text-center text-4xl hover:bg-gray-300'>
-                  <button value={i * 7 + j} class="cursor-pointer" style="width: 100%; height: 100%" on:click={(event)=>addDate(event.currentTarget.getAttribute("value"))}>
+                <td class='transition-all duration-200 border-solid border-2 border-gray-200 text-center text-4xl hover:bg-gray-200'>
+                  <button value={i * 7 + j} class="cursor-pointer w-full h-full p-5" on:click={(event)=>addDate(event.currentTarget.getAttribute("value"))}>
                     {getDayOfMonth(i * 7 + j, month, year)}
                   </button>
                 </td>
@@ -148,7 +154,8 @@
       </table>
     </div>
   </div>
-  <div class='flex ml-4 w-full bg-white rounded p-4'>
+  <div class='flex flex-col ml-4 w-full bg-white rounded p-4'>
+    <h1 class='text-3xl mb-4 text-violet-800'>Time Select</h1>
     <table class='border-collapse w-full'>
       <thead>
         <tr>
@@ -180,9 +187,7 @@
     </table>
   </div>
   <div class='flex ml-4 w-full bg-white rounded p-4'>
-    {#if selectedDates.length}
-    <button class="border-solid border-2 border-lime-500 bg-lime-400 font-extrabold h-12 rounded-full w-24 text-white" on:click={toggle_popup_visibility}> Confirm</button>
-      <Popup message="Are you sure you would like to submit these times?" formAction="?/Set_Dates" confirmButtonText="confirm" cancelButtonText="cancel" contents_value ={[selectedDates, selectedStartTimes, selectedEndTimes]} contents_names={["date","time_start","time_end"]} bind:showContent={popup_visibility}> </Popup>
-    {/if}
-    </div>
+    <button class="transition-all duration-200 p-4 text-xl rounded bg-gray-200 hover:bg-gray-300" on:click={toggle_popup_visibility}> Confirm</button>
+    <Popup message="Are you sure you would like to submit these times?" formAction="?/Set_Dates" confirmButtonText="Yes" cancelButtonText="Cancel" contents_value ={[selectedDates, selectedStartTimes, selectedEndTimes]} contents_names={["date","time_start","time_end"]} bind:showContent={popup_visibility}> </Popup>
+  </div>
 </main>

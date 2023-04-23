@@ -12,7 +12,7 @@
     showContent = !showContent;
     }
 
-    const intervals: number[] = [10,15,30,45,60]
+    const intervals: number[] = [10, 15, 30, 60]
 
     let start_time: String = ''
     let end_time: String = ''
@@ -61,18 +61,27 @@
     <div class="p-5 flex flex-col justify-center rounded-lg bg-white">
         <div class="flex flex-col justify-center items-center">
         <p class="text-2xl">{message}</p>
-        <div class="flex-row">
-            <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={start_time}>
-            <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={end_time}>
-            <select class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" bind:value={interval}>
-                {#each intervals as interval}
-                    <option>{interval}</option>
-                {/each}
-            </select>
+        <div class="flex flex-row mt-4 ">
+            <div class="flex flex-col">
+                <h1 class="text-xl">Start Time</h1>
+                <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={start_time}>
+            </div>
+            <div class="flex flex-col">
+                <h1 class="text-xl">End Time</h1>
+                <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={end_time}>
+            </div>
+            <div class="flex flex-col">
+                <h1 class="text-xl">Interval</h1>
+                <select class="transition-all duration-200 border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" bind:value={interval}>
+                    {#each intervals as interval}
+                        <option>{interval} Minutes</option>
+                    {/each}
+                </select>
+            </div>
         </div>
-        <div class="flex-row">
-            <button on:click={() => interval_add()} class="mt-5 p-3 rounded bg-gray-400 text-xl hover:bg-gray-300">{confirmButtonText}</button>
-            <button on:click={() => toggle()} class="mt-5 ml-5 p-3 rounded bg-gray-400 text-xl hover:bg-gray-300">{cancelButtonText}</button>
+        <div class="flex flex-row">
+            <button on:click={() => interval_add()} class="transition-all duration-200 mt-5 p-3 rounded bg-gray-200 text-xl hover:bg-gray-300">{confirmButtonText}</button>
+            <button on:click={() => toggle()} class="transition-all duration-200 mt-5 ml-5 p-3 rounded bg-violet-200 text-xl hover:bg-violet-300">{cancelButtonText}</button>
         </div>
         </div>
     </div>
