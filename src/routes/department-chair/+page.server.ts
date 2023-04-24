@@ -24,5 +24,22 @@ export const actions: Actions = {
             console.error(err)
             return fail(500, { message: 'Could not remove the presenter'})
         }
+    },
+
+    Archive_Presentations: async ({ request }) => {
+        let table: Record<string, any>[] = await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end' FROM capstone_presentations;`
+        try{
+            for(let count = 0; count < table.length; count++){
+                let id = table[count]["id"]
+                let username = table[count]["username"]
+                let time_start = table[count]["time_start"]
+                let time_end = table[count]["time_end"]
+                await prisma.$queryRaw(Prisma.sql`INSERT INTO capstone_presentations_archive(id,username,time_start, time_end) values(${id},${username},${time_start},${time_end})`)
+            }
+            await prisma.$queryRaw(Prisma.sql`DELETE FROM capstone_presentations`)
+        } catch(err) {
+            console.error(err)
+            return fail(500, { message: 'Could not remove the presenter'})
+        }
     }
 }
