@@ -14,7 +14,7 @@ export const load: ServerLoad = async () => {
   }
 };
 export const actions: Actions = {
-  Student_Change_Time: async ({ request }) => {
+  student_change_time: async ({ request }) => {
     const { username, presentation_id } = Object.fromEntries(await request.formData()) as {
       username: string;
       presentation_id: string;

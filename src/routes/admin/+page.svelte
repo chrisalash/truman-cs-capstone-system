@@ -1,7 +1,23 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { username } from '$lib/stores';
+  import { onMount } from 'svelte';
 
   const databases = ['none', 'student', 'capstone_presentations', 'capstone_presentations_archive'];
+
+  onMount(() => {
+    // TODO: DELETE THIS LATER
+    username.set('jlh4264');
+
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      console.log(cookie);
+      const [name, value] = cookie.split('=');
+      if (name === 'username') {
+        username.set(value);
+      }
+    }
+  });
 
   function route_to_database(event: Event) {
     let selectedRoute = (event.target as HTMLSelectElement).value.trim();

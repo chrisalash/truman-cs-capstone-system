@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { text } from 'svelte/internal';
   import Popup from '../../components/popup.svelte';
   import TimeSelectPopup from '../../components/time-select-popup.svelte';
 
