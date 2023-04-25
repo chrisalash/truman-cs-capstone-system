@@ -3,6 +3,8 @@
   import { onMount } from 'svelte';
 
   onMount(() => {
+    username.set("jlh4264");
+
     const cookies = document.cookie.split('; ');
       for (const cookie of cookies) {
         console.log(cookie)

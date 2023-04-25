@@ -106,10 +106,6 @@
   <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>
     <h1 class='text-5xl text-violet-800'>Department Chair Tools</h1>
   </div>
-  <div class='flex ml-4 mb-8 w-full bg-white rounded p-4'>
-    <Popup message = "Would you like to archive the current capstone presentations?" formAction = "?/Archive_Presentations" bind:showContent={popup2_visibility}></Popup>
-    <button class="border-solid border-2 border-red-500 bg-red-400 font-extrabold h-12 w-32 text-white" on:click={toggle_popup2_visibility}> Archive Presentations</button>
-  </div>
   <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
     <h1 class='text-3xl text-violet-800'>Description</h1>
     <p class='text-xl'>Select dates and times for the capstone presentations.</p>
@@ -153,7 +149,7 @@
       </table>
     </div>
   </div>
-  <div class='flex flex-col ml-4 w-full bg-white rounded p-4'>
+  <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
     <h1 class='text-3xl mb-4 text-violet-800'>Time Select</h1>
     <table class='border-collapse w-full'>
       <thead>
@@ -174,10 +170,8 @@
                 <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
                   <input class="border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" type=time bind:value={selectedEndTimes[i]}>
                 </td>
-                <td class='border-solid border-2 border-gray-200 p-2 cursor-pointer text-center text-xl m-10'>
-                  <button name={i.toString()} class="bg-red-400 h-12 w-24 text-white" on:click={(event)=>deleteDate(event.currentTarget.getAttribute("name"))}>
-                    Delete
-                  </button>
+                <td class='border-solid border-2 border-gray-200 p-2 text-center text-xl m-10'>
+                  <button name={i.toString()} class="transition-all duration-200 p-3 rounded bg-violet-200 text-xl hover:bg-violet-300" on:click={(event)=>deleteDate(event.currentTarget.getAttribute("name"))}>Delete</button>
                 </td>
             </tr>
           {/each}
@@ -185,8 +179,14 @@
       </tbody>
     </table>
   </div>
-  <div class='flex ml-4 w-full bg-white rounded p-4'>
-    <button class="transition-all duration-200 p-4 text-xl rounded bg-gray-200 hover:bg-gray-300" on:click={toggle_popup_visibility}> Confirm</button>
+  <div class='flex flex-col ml-4 mb-8 w-full bg-white rounded p-4'>
+    <h1 class='text-3xl mb-4 text-violet-800'>Add Times</h1>
+    <button class="transition-all duration-200 p-4 text-xl rounded bg-gray-200 hover:bg-gray-300" on:click={toggle_popup_visibility}>Confirm</button>
     <Popup message="Are you sure you would like to submit these times?" formAction="?/Set_Dates" confirmButtonText="Yes" cancelButtonText="Cancel" contents_value ={[selectedDates, selectedStartTimes, selectedEndTimes]} contents_names={["date","time_start","time_end"]} bind:showContent={popup_visibility}> </Popup>
+  </div>
+  <div class='flex flex-col ml-4 w-full bg-white rounded p-4'>
+    <h1 class='text-3xl mb-4 text-violet-800'>Archiving</h1>
+    <Popup message = "Would you like to archive the current capstone presentations?" formAction = "?/Archive_Presentations" bind:showContent={popup2_visibility}></Popup>
+    <button class="transition-all duration-200 p-3 rounded bg-violet-200 text-xl hover:bg-violet-300" on:click={toggle_popup2_visibility}>Archive Presentation Database</button>
   </div>
 </main>

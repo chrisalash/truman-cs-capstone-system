@@ -1,7 +1,7 @@
 <script lang="ts">
   export let message: string;
-  export let confirmButtonText: string = "confrim";
-  export let cancelButtonText: string = "cancel";
+  export let confirmButtonText: string = "Yes";
+  export let cancelButtonText: string = "Cancel";
   export let formAction: string;
   export let contents_value: (String[] | Date[])[] = []
   export let contents_names: string[] = []

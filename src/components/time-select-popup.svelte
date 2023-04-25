@@ -74,7 +74,7 @@
                 <h1 class="text-xl">Interval</h1>
                 <select class="transition-all duration-200 border-solid border border-gray-200 cursor-pointer h-10 w-40 text-2xl hover:bg-gray-300" bind:value={interval}>
                     {#each intervals as interval}
-                        <option>{interval} Minutes</option>
+                        <option>{interval}</option>
                     {/each}
                 </select>
             </div>
