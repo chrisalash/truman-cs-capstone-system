@@ -15,9 +15,6 @@
   let usernameValue: string;
 
   onMount(() => {
-    // TODO: DELETE THIS LATER
-    username.set('jlh4264');
-
     const cookies = document.cookie.split('; ');
     for (const cookie of cookies) {
       console.log(cookie);
