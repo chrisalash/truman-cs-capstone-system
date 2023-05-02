@@ -37,6 +37,7 @@ export const actions: Actions = {
                 await prisma.$queryRaw(Prisma.sql`INSERT INTO capstone_presentations_archive(id,username,time_start, time_end) values(${id},${username},${time_start},${time_end})`)
             }
             await prisma.$queryRaw(Prisma.sql`DELETE FROM capstone_presentations`)
+            await prisma.$queryRaw(Prisma.sql`DELETE FROM professor_presentation_signup`)
         } catch(err) {
             console.error(err)
             return fail(500, { message: 'Could not remove the presenter'})

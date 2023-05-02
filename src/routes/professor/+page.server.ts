@@ -8,6 +8,7 @@ export const load: ServerLoad = async () => {
     try 
     {
         let prez = await prisma.$queryRaw(Prisma.sql`SELECT group_concat(IF(capstone_presentations.username="",1,0) separator ',') slot_taken, group_concat((id) separator ',') as id, group_concat(capstone_presentations.username separator ',') as username, DATE_FORMAT(time_start, '%m/%d/%Y') as date, group_concat(DATE_FORMAT(time_start, '%h:%i %p') separator ',') as time_start, group_concat(DATE_FORMAT(time_end, '%h:%i %p') separator ',') as time_end FROM capstone_presentations group by date order by date Asc;`)
+        let prof_signup =  await prisma.$queryRaw(Prisma.sql`Select date_of_presentation, professor from professor_presentation_signup`)
         let lengths: number[] = []
         for(let count = 0; count < prez.length; count++) {
             prez[count].slot_taken = prez[count].slot_taken.split(',')
@@ -19,8 +20,6 @@ export const load: ServerLoad = async () => {
             lengths.push(prez[count].time_start.length)
         }
         return{
-            
-
             presentations: prez,
             table_size: Math.max(...lengths)
         }
@@ -47,6 +46,27 @@ export const actions: Actions = {
             }
             
         } catch(err) {
+            console.error(err)
+            return fail(500, { message: 'Could not remove the presenter'})
+        }
+
+        return {
+            status: 201
+        }
+    },
+
+    Professor_Signup: async ({ request }) => {
+        const { date, username } = Object.fromEntries(await request.formData()) as { 
+            date: string, 
+            username:string
+        }
+        try{
+            if(await prisma.$queryRaw(Prisma.sql`SELECT professor FROM professor_presentation_signup WHERE professor Like ${username} AND date_of_presentation LIKE ${date}`)){
+                await prisma.$queryRaw(Prisma.sql`Update professor_presentation_signup set professor = "" where professor = ${username}`)
+            }
+            await prisma.$queryRaw(Prisma.sql`INSERT INTO professor_presentation_signup(date_of_presentation, professor) values(${date},${username}})`)
+        }
+        catch(err) {
             console.error(err)
             return fail(500, { message: 'Could not remove the presenter'})
         }
