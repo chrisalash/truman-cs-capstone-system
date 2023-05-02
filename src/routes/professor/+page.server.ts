@@ -21,7 +21,8 @@ export const load: ServerLoad = async () => {
         }
         return{
             presentations: prez,
-            table_size: Math.max(...lengths)
+            table_size: Math.max(...lengths),
+            prof_signup: prof_signup
         }
     } 
     catch (error) {
