@@ -6,9 +6,17 @@ import { fail } from '@sveltejs/kit';
 // Server-side load function to fetch presentation data from the database
 export const load: ServerLoad = async () => {
   try {
-    let prez = await prisma.$queryRaw(
-      Prisma.sql`SELECT group_concat(IF(capstone_presentations.username="",1,0) separator ',') slot_taken, group_concat((id) separator ',') as id, group_concat(capstone_presentations.username separator ',') as username, DATE_FORMAT(time_start, '%m/%d/%Y') as date, group_concat(DATE_FORMAT(time_start, '%h:%i %p') separator ',') as time_start, group_concat(DATE_FORMAT(time_end, '%h:%i %p') separator ',') as time_end FROM capstone_presentations group by date order by date Asc;`
-    );
+    let prez = await prisma.$queryRaw(Prisma.sql`SELECT
+        GROUP_CONCAT(IF(cp.username="",1,0) ORDER BY cp.time_start SEPARATOR ',') AS slot_taken,
+        GROUP_CONCAT(cp.id ORDER BY cp.time_start SEPARATOR ',') AS id,
+        GROUP_CONCAT(cp.username ORDER BY cp.time_start SEPARATOR ',') AS username,
+        DATE_FORMAT(cp.time_start, '%m/%d/%Y') AS date,
+        GROUP_CONCAT(DATE_FORMAT(cp.time_start, '%h:%i %p') ORDER BY cp.time_start SEPARATOR ',') AS time_start,
+        GROUP_CONCAT(DATE_FORMAT(cp.time_end, '%h:%i %p') ORDER BY cp.time_start SEPARATOR ',') AS time_end
+        FROM capstone_presentations AS cp
+        GROUP BY date
+        ORDER BY date ASC;
+      `)
     let lengths: number[] = [];
     for (let count = 0; count < prez.length; count++) {
       prez[count].slot_taken = prez[count].slot_taken.split(',');
