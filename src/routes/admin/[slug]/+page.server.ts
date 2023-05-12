@@ -18,10 +18,10 @@ async function table_returner(db: string) {
     return await prisma.$queryRaw`SELECT * FROM capstone2.student;`;
   } else if (db == 'capstone_presentations') {
     database = db;
-    return await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end' FROM capstone_presentations;`;
+    return await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end', professors FROM capstone_presentations;`;
   } else if (db == 'capstone_presentations_archive') {
     database = db;
-    return await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end' FROM capstone_presentations_archive;`;
+    return await prisma.$queryRaw`SELECT id,username,DATE_FORMAT(time_start,'%Y-%m-%dT%H:%i') as 'time_start',DATE_FORMAT(time_end,'%Y-%m-%dT%H:%i') as 'time_end', professors FROM capstone_presentations_archive;`;
   }
   return table;
 }
