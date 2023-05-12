@@ -80,12 +80,11 @@ export const actions: Actions = {
               const index = profarr.indexOf(username, 0);
               if(index > -1){
                   profarr.splice(index, 1);
-                  await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set professors = ${profarr.toString} where id = ${presentation_id}`);
               }
               else {
                 profarr.push(username);
-                await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set professors = ${profarr.toString} where id = ${presentation_id}`);
               }
+              await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set professors = ${profarr.toString} where id = ${presentation_id}`);
               
           } catch(err) {
               console.error(err)
