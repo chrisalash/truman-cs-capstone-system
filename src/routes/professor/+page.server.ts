@@ -17,7 +17,11 @@ export const load: ServerLoad = async () => {
         GROUP BY date
         ORDER BY date ASC;
       `);
-    let prof_signup =  await prisma.$queryRaw(Prisma.sql`Select date_of_presentation, professor from professor_presentation_signup`)
+    let prof_signup =  await prisma.$queryRaw(Prisma.sql`SELECT DATE_FORMAT(date_of_presentation, '%m/%d/%Y') as date_of_presentation, GROUP_CONCAT(professor SEPARATOR ', ') AS professors
+    FROM professor_presentation_signup 
+    GROUP BY date_of_presentation;      
+      `);
+      console.log(prof_signup);
     let lengths: number[] = [];
     for (let count = 0; count < prez.length; count++) {
       prez[count].slot_taken = prez[count].slot_taken.split(',');
@@ -27,6 +31,9 @@ export const load: ServerLoad = async () => {
       prez[count].username = prez[count].username.split(',');
       console.log(prez[count].username);
       lengths.push(prez[count].time_start.length);
+    }
+    for (let count = 0; count < prof_signup?.length; count++) {
+      prof_signup[count].professors = prof_signup[count].professors.split(',');
     }
     return {
       presentations: prez,
@@ -40,7 +47,8 @@ export const load: ServerLoad = async () => {
 
 // Actions that the webpage will perform that access the database
 export const actions: Actions = {
-  Remove_Student: async ({ request }) => {
+  // Not used in current version
+  /*Remove_Student: async ({ request }) => {
     const { username, presentation_id } = Object.fromEntries(await request.formData()) as {
       username: string;
       presentation_id: string;
@@ -61,18 +69,26 @@ export const actions: Actions = {
         return {
             status: 201
         }
-    },
-
+    },*/
+    
     Professor_Signup: async ({ request }) => {
         const { date, username } = Object.fromEntries(await request.formData()) as { 
-            date: string, 
-            username:string
-        }
+            date: string;
+            username: string;
+        };
         try{
-            if(await prisma.$queryRaw(Prisma.sql`SELECT professor FROM professor_presentation_signup WHERE professor Like ${username} AND date_of_presentation LIKE ${date}`)){
-                await prisma.$queryRaw(Prisma.sql`Update professor_presentation_signup set professor = "" where professor = ${username}`)
+            console.log(date);
+            console.log(username);
+            // formats the data for the database
+            let dateParts = date.split('/');
+            let formattedDate = `${dateParts[2]}/${dateParts[0]}/${dateParts[1]}`;
+            if(await prisma.$queryRaw(Prisma.sql`SELECT professor FROM professor_presentation_signup WHERE professor = ${username} AND DATE_FORMAT(date_of_presentation, '%m/%d/%Y') = ${date}`) != 0){
+              await prisma.$queryRaw(Prisma.sql`DELETE FROM professor_presentation_signup WHERE DATE_FORMAT(date_of_presentation, '%m/%d/%Y') = ${date} AND professor = ${username}`)
             }
-            await prisma.$queryRaw(Prisma.sql`INSERT INTO professor_presentation_signup(date_of_presentation, professor) values(${date},${username}})`)
+            else{
+              await prisma.$queryRaw(Prisma.sql`INSERT INTO professor_presentation_signup(date_of_presentation, professor) values(${formattedDate},${username})`)
+            }
+            
         }
         catch(err) {
             console.error(err)
