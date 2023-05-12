@@ -12,12 +12,12 @@ export const load: ServerLoad = async () => {
         GROUP_CONCAT(cp.username ORDER BY cp.time_start SEPARATOR ',') AS username,
         DATE_FORMAT(cp.time_start, '%m/%d/%Y') AS date,
         GROUP_CONCAT(DATE_FORMAT(cp.time_start, '%h:%i %p') ORDER BY cp.time_start SEPARATOR ',') AS time_start,
-        GROUP_CONCAT(DATE_FORMAT(cp.time_end, '%h:%i %p') ORDER BY cp.time_start SEPARATOR ',') AS time_end
+        GROUP_CONCAT(DATE_FORMAT(cp.time_end, '%h:%i %p') ORDER BY cp.time_start SEPARATOR ',') AS time_end,
+        GROUP_CONCAT(cp.professors ORDER BY cp.time_start SEPARATOR ';') AS professors
         FROM capstone_presentations AS cp
         GROUP BY date
         ORDER BY date ASC;
       `);
-    let prof_signup =  await prisma.$queryRaw(Prisma.sql`Select date_of_presentation, professor from professor_presentation_signup`)
     let lengths: number[] = [];
     for (let count = 0; count < prez.length; count++) {
       prez[count].slot_taken = prez[count].slot_taken.split(',');
@@ -25,13 +25,16 @@ export const load: ServerLoad = async () => {
       prez[count].time_start = prez[count].time_start.split(',');
       prez[count].time_end = prez[count].time_end.split(',');
       prez[count].username = prez[count].username.split(',');
-      console.log(prez[count].username);
+      prez[count].professors = prez[count].professors.split(';');
+      for (let count2 = 0; count2 < prez[count].professors.length; count2++) {
+        prez[count].professors[count2] = prez[count].professors[count2].split(',');
+      }
+      console.log(prez[count].professors);
       lengths.push(prez[count].time_start.length);
     }
     return {
       presentations: prez,
-      table_size: Math.max(...lengths),
-      prof_signup: prof_signup
+      table_size: Math.max(...lengths)
     };
   } catch (error) {
     console.error(error);
@@ -64,23 +67,33 @@ export const actions: Actions = {
     },
 
     Professor_Signup: async ({ request }) => {
-        const { date, username } = Object.fromEntries(await request.formData()) as { 
-            date: string, 
-            username:string
-        }
-        try{
-            if(await prisma.$queryRaw(Prisma.sql`SELECT professor FROM professor_presentation_signup WHERE professor Like ${username} AND date_of_presentation LIKE ${date}`)){
-                await prisma.$queryRaw(Prisma.sql`Update professor_presentation_signup set professor = "" where professor = ${username}`)
-            }
-            await prisma.$queryRaw(Prisma.sql`INSERT INTO professor_presentation_signup(date_of_presentation, professor) values(${date},${username}})`)
-        }
-        catch(err) {
-            console.error(err)
-            return fail(500, { message: 'Could not remove the presenter'})
-        }
-
-        return {
-            status: 201
-        }
+      const { username, professors, presentation_id } = Object.fromEntries(await request.formData()) as {
+        username: string;
+        professors: string;
+        presentation_id: string;
+      };
+  
+          try{
+              console.log(username);
+              console.log(presentation_id);
+              let profarr = professors.split(",")
+              const index = profarr.indexOf(username, 0);
+              if(index > -1){
+                  profarr.splice(index, 1);
+                  await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set professors = ${profarr.toString} where id = ${presentation_id}`);
+              }
+              else {
+                profarr.push(username);
+                await prisma.$queryRaw(Prisma.sql`Update capstone_presentations set professors = ${profarr.toString} where id = ${presentation_id}`);
+              }
+              
+          } catch(err) {
+              console.error(err)
+              return fail(500, { message: 'Could not remove the presenter'})
+          }
+  
+          return {
+              status: 201
+          }
   }
 };
