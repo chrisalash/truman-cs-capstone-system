@@ -1,6 +1,8 @@
 <script lang="ts">
   import Popup from '../../components/popup.svelte';
   import TimeSelectPopup from '../../components/time-select-popup.svelte';
+  import { username } from '$lib/stores';
+  import { onMount } from 'svelte';
 
   const monthsInYear = [
     'January',
@@ -28,6 +30,7 @@
   // values for the time select popup
   let selectedDate: String;
   let timeSelectVisibility = false;
+  let usernameValue: string;
 
   export let selectedDates: String[] = [];
   export let selectedStartTimes: String[] = [];
@@ -98,6 +101,22 @@
   function toggle_popup2_visibility() {
     popup2_visibility = !popup2_visibility;
   }
+
+  onMount(() => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      console.log(cookie);
+      const [name, value] = cookie.split('=');
+      if (name === 'username') {
+        username.set(value);
+      }
+    }
+  });
+
+  username.subscribe((value) => {
+    usernameValue = value;
+  });
+
 </script>
 
 <main class="flex flex-col">
