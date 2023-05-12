@@ -47,6 +47,7 @@ export const load: ServerLoad = async () => {
 
 // Actions that the webpage will perform that access the database
 export const actions: Actions = {
+  // Not used in current version
   /*Remove_Student: async ({ request }) => {
     const { username, presentation_id } = Object.fromEntries(await request.formData()) as {
       username: string;

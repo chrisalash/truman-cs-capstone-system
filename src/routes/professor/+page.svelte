@@ -24,7 +24,7 @@
   let month = date.getMonth();
   let rows = [];
 
-  let usernameValue: "ewp8285";
+  let usernameValue: string;
 
   onMount(() => {
     const cookies = document.cookie.split('; ');
@@ -51,14 +51,70 @@
   </div>
   <div class="flex flex-col ml-4 mb-8 w-full bg-white rounded p-4">
     <h1 class="text-3xl text-violet-800">Description</h1>
-    <p class="text-xl">View all student capstone presentation times.</p>
+    <p class="text-xl">View all student capstone presentation times and sign up for days to attend presentations.</p>
   </div>
+  <!-- Professor Signup container -->
+  <div class="flex flex-col ml-4 w-full bg-white rounded p-4">
+    <h1 class="text-3xl mb-4 text-violet-800">Professor Signup</h1>
+      
+    <!-- Table to display professor signup data -->
+    <div bind:this={tableContainer} class="overflow-x-auto">
+        <table class="border-collapse w-full">
+          <thead>
+            <tr>
+              <!-- Loop through presentations and display the date as table header -->
+              {#each presentations as presentation}
+                <th
+                  style="min-width: 600px"
+                  class="border-solid border-2 border-gray-200 p-2 text-center text-2xl m-10 bg-gray-300"
+                  >{presentation.date}</th
+                >
+              {/each}
+            </tr>
+            <!-- Row for the professors -->
+            <tr>
+              {#each presentations as presentation}
+                {#if prof_signup.some(profs => profs.date_of_presentation === presentation.date)}
+                  {#each prof_signup as profs}
+                    {#if profs.date_of_presentation === presentation.date}
+                      <td
+                        style="height: 74px; min-width: 600px"
+                        class="border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer text-gray-600 text-center text-xl m-10 relative"
+                      >
+                        <form action="?/Professor_Signup" method="POST">
+                          <button class="w-full h-full absolute top-0 left-0">
+                            {profs.professors}<br />
+                          </button>
+                          <input type="hidden" name="date" value={profs.date_of_presentation} />
+                          <input type="hidden" name="username" value={usernameValue} />
+                        </form>
+                      </td>
+                    {/if}
+                  {/each}
+                {:else}
+                  <td
+                    style="height: 74px; min-width: 600px"
+                    class="border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer text-gray-600 text-center text-xl m-10 relative"
+                  >
+                    <form action="?/Professor_Signup" method="POST">
+                      <button class="w-full h-full absolute top-0 left-0">
+                        Empty<br />
+                      </button>
+                      <input type="hidden" name="date" value={presentation.date} />
+                      <input type="hidden" name="username" value={usernameValue} />
+                    </form>
+                  </td>
+                {/if}
+              {/each}
+            </tr>
+          </thead>
+        </table>
+    </div>
+  </div>
+  
   <!-- Presentations container -->
   <div class="flex flex-col ml-4 w-full bg-white rounded p-4">
     <h1 class="text-3xl mb-4 text-violet-800">Student Times</h1>
-    <div class="mb-4">
-      <h3 class="text-3xl">Spring - {year}</h3>
-    </div>
     <!-- Table to display presentation data -->
     <div bind:this={tableContainer} class="overflow-x-auto">
       <table class="border-collapse w-full">
@@ -73,22 +129,7 @@
             {/each}
           </tr>
           <!-- Row for the professors -->
-          <tr>
-            {#each prof_signup as profs}
-              <td
-                style="height: 74px; min-width: 600px"
-                class="border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer text-gray-400 text-center text-xl m-10 relative"
-              >
-                <form action="?/Professor_Signup" method="POST">
-                    <button class="w-full h-full absolute top-0 left-0">
-                      {profs.professors}<br />     <!-- {profs.date_of_presentation}{usernameValue} -->
-                    </button>
-                    <input type="hidden" name="date" value={profs.date_of_presentation} />
-                    <input type="hidden" name="username" value={usernameValue} />
-                </form>
-              </td>
-            {/each}
-          </tr>
+          
         </thead>
         <tbody>
           <!-- Loop through the presentations and display the start and end times -->

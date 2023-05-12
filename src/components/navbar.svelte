@@ -51,7 +51,7 @@
         >
       </li>
     {/if}
-    {#if usernameValue == 'jlh4264' || usernameValue == 'cah1357'}
+    {#if usernameValue == 'jlh4264' || usernameValue == 'cah1357' || usernameValue == 'ewp8285'}
       <li class="flex justify-center">
         <a
           class="transition-all duration-200 w-72 m-4 mt-1 mb-2 p-3 flex justify-start align-center rounded-lg hover:bg-gray-200"
@@ -59,7 +59,7 @@
         >
       </li>
     {/if}
-    {#if usernameValue == 'jlh4264' || usernameValue == 'cah1357'}
+    {#if usernameValue == 'jlh4264' || usernameValue == 'cah1357' || usernameValue == 'ewp8285'}
       <div class="h-0.5 m-5 mt-2 mb-2 flex justify-center align-center bg-gray-200" />
       <li class="flex justify-center">
         <a
