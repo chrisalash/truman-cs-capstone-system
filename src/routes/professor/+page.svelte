@@ -2,11 +2,15 @@
   // Import the required modules and types
   import { fromJSON } from 'postcss';
   import type { PageData } from './$types';
+  import { username } from '$lib/stores';
+  import { onMount } from 'svelte';
+
 
   // Declare reactive variables and bind them to the incoming data
   export let data: PageData;
   $: ({ presentations } = data);
   $: ({ table_size } = data);
+  $: ({ prof_signup } = data);
 
   // Ensure the table_size is not null
   $: notNull = table_size as number;
@@ -19,7 +23,25 @@
   let year = date.getFullYear();
   let month = date.getMonth();
   let rows = [];
-  let username = 'testuserna';
+
+  let usernameValue: "ewp8285";
+
+  onMount(() => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      console.log(cookie);
+      const [name, value] = cookie.split('=');
+      if (name === 'username') {
+        username.set(value);
+      }
+    }
+  });
+
+  username.subscribe((value) => {
+    usernameValue = value;
+  });
+  
+
 </script>
 
 <main class="flex flex-col">
@@ -50,6 +72,23 @@
               >
             {/each}
           </tr>
+          <!-- Row for the professors -->
+          <tr>
+            {#each prof_signup as profs}
+              <td
+                style="height: 74px; min-width: 600px"
+                class="border-solid border-2 border-gray-200 hover:bg-gray-300 p-2 cursor-pointer text-gray-400 text-center text-xl m-10 relative"
+              >
+                <form action="?/Professor_Signup" method="POST">
+                    <button class="w-full h-full absolute top-0 left-0">
+                      {profs.professors}<br />     <!-- {profs.date_of_presentation}{usernameValue} -->
+                    </button>
+                    <input type="hidden" name="date" value={profs.date_of_presentation} />
+                    <input type="hidden" name="username" value={usernameValue} />
+                </form>
+              </td>
+            {/each}
+          </tr>
         </thead>
         <tbody>
           <!-- Loop through the presentations and display the start and end times -->
@@ -58,13 +97,13 @@
               {#each presentations as presentation}
                 {#if presentation.time_start[i] != undefined}
                   {#if presentation.slot_taken[i] == 0}
-                    <!-- Display a button to remove a student if the slot is taken -->
+                    <!-- Display start and end times and the name of student signed up for the slot -->
                     <td
                       style="height: 100%; min-width: 600px"
                       class="border-solid border-2 border-gray-200 p-2 text-center text-gray-600 text-xl m-10"
                     >
                       {presentation.time_start[i]}-{presentation.time_end[i]}<br />
-                      <span class="text-gray-600">{presentation.username[i]}</span>
+                      {presentation.username[i]}
                     </td>
                   {:else}
                     <!-- Display the start and end times if the slot is not taken -->
